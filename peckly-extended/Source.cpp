@@ -75,19 +75,19 @@ public:
 };
 
 class Ghana : Grouping {
-	int findErr(int x, int y, int z) { // x - 시작 위치, y - 끝 위치, z - 비교 데이터 개수
-		for (int i = x; i <= x + (z / 2) - 1; i++) {
-			if (s[i] >= x + (z / 2)) 
-				return i;
+	int findErr(int x, int y, bool albt) { // x - 시작 위치, y - 끝 위치, albt - 알파/베타(False - 알파, True - 베타)
+		for (int i = x; i <= y/2; i++) {
+			if(!albt) if (s[i] >= y+1) return i;
+			else { if (s[i] <= y) return i; }
 		}
 		return -1;
 	}
-	void choco(int n) {
+	void fnc(int n) {
 		int x = n / 2;
 		int m = x / 2;
 		int errLoc;
 		while (1) {
-			errLoc = findErr(1, x, x);
+			errLoc = findErr(1, m, false);
 			if (errLoc != -1) {
 				if (2 * errLoc / m != 0) A(m);
 				m /= 2;
@@ -100,10 +100,10 @@ class Ghana : Grouping {
 		A(x / 2);
 		m = x / 2;
 		while (1) {
-			errLoc = findErr(1, x, x);
+			errLoc = findErr(1, m, true);
 			if (errLoc != -1) {
 				if (2 * errLoc / m != 0) {
-					A(m);
+					A(m/2);
 				}
 				m /= 2;
 				if (m == 0) break;
@@ -112,14 +112,15 @@ class Ghana : Grouping {
 		}
 		B(n);
 		A(x / 2);
+		B(n);
 	}
 public:
 	void Gh(int x) {
-		if (x == 4) return;
+		if (x == 1) return;
 		while (1) {
-			int errLoc = findErr(1, x, x);
+			int errLoc = findErr(1, x/2, false);
 			if (errLoc == -1) break;
-			choco(x);
+			fnc(x);
 		}
 		Gh(x / 2);
 		Gh(x / 2);
