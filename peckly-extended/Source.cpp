@@ -73,6 +73,60 @@ public:
 		}
 	}
 };
+
+class Ghana : Grouping {
+	int findErr(int x, int y, int z) { // x - 시작 위치, y - 끝 위치, z - 비교 데이터 개수
+		for (int i = x; i <= x + (z / 2) - 1; i++) {
+			if (s[i] >= x + (z / 2)) 
+				return i;
+		}
+		return -1;
+	}
+	void choco(int n) {
+		int x = n / 2;
+		int m = x / 2;
+		int errLoc;
+		while (1) {
+			errLoc = findErr(1, x, x);
+			if (errLoc != -1) {
+				if (2 * errLoc / m != 0) A(m);
+				m /= 2;
+				if (m == 0) break;
+			}
+			else break;
+			B(n);
+		}
+		
+		A(x / 2);
+		m = x / 2;
+		while (1) {
+			errLoc = findErr(1, x, x);
+			if (errLoc != -1) {
+				if (2 * errLoc / m != 0) {
+					A(m);
+				}
+				m /= 2;
+				if (m == 0) break;
+			}
+			else break;
+		}
+		B(n);
+		A(x / 2);
+	}
+public:
+	void Gh(int x) {
+		if (x == 4) return;
+		while (1) {
+			int errLoc = findErr(1, x, x);
+			if (errLoc == -1) break;
+			choco(x);
+		}
+		Gh(x / 2);
+		Gh(x / 2);
+		return;
+	}
+};
+
 int main()
 {
 	int n;
@@ -85,12 +139,12 @@ int main()
 	*/
 	randomize(n);
 	Grouping Grp;
+	Ghana Ghn;
 	Grp.G(n);
-	for (i = 1; i <= n/2; i++) {
-		cout << s[i] << " ";
-	}
-	cout << endl;
-	for (i = n / 2 + 1; i <= n; i++) {
+	Ghn.Gh(n/2);
+	Grp.A(n / 2);
+	Ghn.Gh(n / 2);
+	for (i = 1; i <= n; i++) {
 		cout << s[i] << " ";
 	}
 	cout << endl;
