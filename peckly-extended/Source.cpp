@@ -71,6 +71,7 @@ private:
 		}
 		A(n / 2, n);
 		findGhana(n, &alpha, &beta);
+		beta -= (n / 2);
 		x = n / 4;
 		while (1) {
 			if ((beta - 1) / x != 0) A(x, n);
@@ -174,7 +175,10 @@ private:
 class Ghana : Grouping {
 public:
 	static void Start(int n) {
-		chocolate(n);
+		//chocolate(n);
+		for(int i=1;i<=n;i++)
+			cout << s[i] << " ";
+		system("pause");
 		return;
 	}
 private:
@@ -220,15 +224,15 @@ int main()
 {
 	int n;
 	cin >> n;
-	randomize(n); //Make random data
+	//randomize(n); //Make random data
 
 	int i;
-	/*
+	
 	cin >> n;
 	for (i = 1; i <= n; i++) { //Input from user
 	cin >> s[i];
 	}
-	*/
+	
 	for (i = 1; i <= n; i++) { //Output starting
 		cout << s[i] << " ";
 	}
@@ -238,7 +242,7 @@ int main()
 	Grouping::Start(n); //Starting grouping
 	Ghana::Start(n); //Starting ghana algorithm
 
-					 //findErr(); //Call error find function
+	//findErr(); //Call error find function
 	return 0;
 }
 /////////////////
@@ -259,7 +263,7 @@ void randomize(int n)
 
 		if (d[a] != 1) {
 			d[a] = 1;
-			s[i] = a;
+			s[i] = a; 
 		}
 		else goto re;
 	}
