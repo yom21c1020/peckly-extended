@@ -34,7 +34,7 @@ public:
 		A(n / 2);
 		x = n / 4;
 		while (1) {
-			for (int i = n/2+1; i <= n; i++) {
+			for (int i = n / 2 + 1; i <= n; i++) {
 				if (s[i] > n / 2) {
 					beta = i;
 					break;
@@ -51,18 +51,18 @@ public:
 		int i;
 		for (i = 1; i <= n / 2; i++) {
 			if (s[i] <= n / 2) cnt++;
-		}	
+		}
 
 		if (cnt == 0) {
 			A(n / 2);
 		}
 		else if (cnt == n / 2) {
-			
+
 		}
-		else if(cnt == 1){
+		else if (cnt == 1) {
 			g1(n);
 		}
-		else if(cnt >= 2 && cnt <= n/4) {
+		else if (cnt >= 2 && cnt <= n / 4) {
 			g1(n);
 			G(n);
 		}
@@ -75,10 +75,11 @@ public:
 };
 
 class Ghana : Grouping {
+public:
 	int findErr(int x, int y, bool albt) { // x - 시작 위치, y - 끝 위치, albt - 알파/베타(False - 알파, True - 베타)
-		for (int i = x; i <= y/2; i++) {
-			if(!albt) if (s[i] >= y+1) return i;
-			else { if (s[i] <= y) return i; }
+		for (int i = x; i <= y; i++) {
+			if (albt == false) if ((s[i] % 2 * y ? s[i] % 2 * y : 2 * y) >= y + 1) return i;
+			else if (albt == true) if ((s[i] % 2 * y ? s[i] % 2 * y : 2 * y) <= y) return i;
 		}
 		return -1;
 	}
@@ -89,28 +90,26 @@ class Ghana : Grouping {
 		while (1) {
 			errLoc = findErr(1, m, false);
 			if (errLoc != -1) {
-				if (2 * errLoc / m != 0) A(m);
+				if (2 * errLoc / m != 0) A(m / 2);
 				m /= 2;
 				if (m == 0) break;
 			}
 			else break;
 			B(n);
 		}
-		
+
 		A(x / 2);
 		m = x / 2;
 		while (1) {
 			errLoc = findErr(1, m, true);
 			if (errLoc != -1) {
-				if (2 * errLoc / m != 0) {
-					A(m/2);
-				}
+				if (2 * errLoc / m != 0) A(m / 2);
 				m /= 2;
 				if (m == 0) break;
 			}
 			else break;
+			B(n);
 		}
-		B(n);
 		A(x / 2);
 		B(n);
 	}
@@ -118,7 +117,8 @@ public:
 	void Gh(int x) {
 		if (x == 1) return;
 		while (1) {
-			int errLoc = findErr(1, x/2, false);
+			s[1];
+			int errLoc = findErr(1, x / 2, false);
 			if (errLoc == -1) break;
 			fnc(x);
 		}
@@ -133,22 +133,28 @@ int main()
 	int n;
 	cin >> n;
 	int i;
-	/*
+
 	for (i = 1; i <= n; i++) {
 		cin >> s[i];
 	}
-	*/
-	randomize(n);
+
+	//randomize(n);
 	Grouping Grp;
 	Ghana Ghn;
+	//int y;
+	//cin >> y;
+	//cout << Ghn.findErr(1, y, false) << " " << Ghn.findErr(1, y, true) << endl;
+
 	Grp.G(n);
-	Ghn.Gh(n/2);
+	Ghn.Gh(n / 2);
 	Grp.A(n / 2);
 	Ghn.Gh(n / 2);
+	if (s[1] != 1) Grp.A(n / 2);
 	for (i = 1; i <= n; i++) {
 		cout << s[i] << " ";
 	}
 	cout << endl;
+
 	return 0;
 }
 
