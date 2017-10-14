@@ -76,19 +76,37 @@ public:
 
 class Ghana : Grouping {
 public:
-	int findErr(int x, int y, bool albt) { // x - 시작 위치, y - 끝 위치, albt - 알파/베타(False - 알파, True - 베타)
-		for (int i = x; i <= y; i++) {
-			if (albt == false) if ((s[i] % 2 * y ? s[i] % 2 * y : 2 * y) >= y + 1) return i;
-			else if (albt == true) if ((s[i] % 2 * y ? s[i] % 2 * y : 2 * y) <= y) return i;
+	int findErr(int n, int type) { // x - 시작 위치, y - 끝 위치, albt - 알파/베타(False - 알파, True - 베타)
+		switch (type) {
+		case 1: {
+			for (int i = 1; i <= n; i++) if (s[i] > n) return i;
+			break;
+		}
+		case 2: {
+			for (int i = 1; i <= n; i++) if (s[i] % (2 * n) > n) return i;
+			break;
+		}
+		case 3: {
+			for (int i = 1; i <= n; i++)if (s[i] % (2 * n) <= n) return i;
+			break;
+		}
 		}
 		return -1;
 	}
 	void fnc(int n) {
-		int x = n / 2;
+		int x = n;
 		int m = x / 2;
 		int errLoc;
+		if (x == 2) {
+			for (int i = 1; i <= 2; i++) {
+				int errLoc = findErr(m, 2);
+				if (errLoc == -1) A(2);
+				else A(1);
+			}
+			return;
+		}
 		while (1) {
-			errLoc = findErr(1, m, false);
+			errLoc = findErr(m, 2);
 			if (errLoc != -1) {
 				if (2 * errLoc / m != 0) A(m / 2);
 				m /= 2;
@@ -101,7 +119,7 @@ public:
 		A(x / 2);
 		m = x / 2;
 		while (1) {
-			errLoc = findErr(1, m, true);
+			errLoc = findErr(m, 3);
 			if (errLoc != -1) {
 				if (2 * errLoc / m != 0) A(m / 2);
 				m /= 2;
@@ -118,11 +136,12 @@ public:
 		if (x == 1) return;
 		while (1) {
 			s[1];
-			int errLoc = findErr(1, x / 2, false);
+			int errLoc = findErr(x / 2, 1);
 			if (errLoc == -1) break;
 			fnc(x);
 		}
 		Gh(x / 2);
+		A(x);
 		Gh(x / 2);
 		return;
 	}
@@ -141,9 +160,9 @@ int main()
 	//randomize(n);
 	Grouping Grp;
 	Ghana Ghn;
-	//int y;
-	//cin >> y;
-	//cout << Ghn.findErr(1, y, false) << " " << Ghn.findErr(1, y, true) << endl;
+	/*int x, y;
+	cin >> x >> y;
+	cout << Ghn.findErr(x, y);*/
 
 	Grp.G(n);
 	Ghn.Gh(n / 2);
