@@ -5,6 +5,7 @@
 using namespace std;
 //Start of Array = 1
 int s[100001];
+int G_n;
 void randomize(int n);
 class Grouping {
 public:
@@ -14,8 +15,8 @@ public:
 			swap(s[i], s[i + x]);
 		}
 	}
-	void B(int n) {
-		swap(s[1], s[n / 2 + 1]);
+	void B() {
+		swap(s[1], s[G_n / 2 + 1]);
 	}
 	void g1(int n) {
 		int x = n / 4;
@@ -44,7 +45,7 @@ public:
 			x /= 2;
 			if (x == 0) break;
 		}
-		B(n);
+		B();
 	}
 	void G(int n) {
 		int cnt = 0;
@@ -76,81 +77,81 @@ public:
 
 class Ghana : Grouping {
 public:
-	int findErr(int n, int type) { // x - 시작 위치, y - 끝 위치, albt - 알파/베타(False - 알파, True - 베타)
-		switch (type) {
+	int findErr(int n, int mode)
+	{
+		switch (mode) {
 		case 1: {
 			for (int i = 1; i <= n; i++) if (s[i] > n) return i;
 			break;
 		}
 		case 2: {
-			for (int i = 1; i <= n; i++) if (s[i] % (2 * n) > n) return i;
+			for (int i = 1; i <= n; i++) if (s[i] % 2 * n  > n) return i;
 			break;
 		}
 		case 3: {
-			for (int i = 1; i <= n; i++)if (s[i] % (2 * n) <= n) return i;
+			for (int i = 1; i <= n; i++) if (s[i] % 2 * n <= n) return i;
 			break;
 		}
 		}
-		return -1;
 	}
-	void fnc(int n) {
-		int x = n;
+	void fnc(int x)
+	{
 		int m = x / 2;
-		int errLoc;
 		if (x == 2) {
-			for (int i = 1; i <= 2; i++) {
-				int errLoc = findErr(m, 2);
-				if (errLoc == -1) A(2);
-				else A(1);
-			}
+			m = 1;
+			int errLoc = findErr(m, 2);
+			if (errLoc != -1) A(1);
+			A(2);
+			errLoc = findErr(m, 2);
+			if (errLoc != -1) A(1);
+			A(2);
 			return;
 		}
+		int errLoc = findErr(m, 2);
 		while (1) {
-			errLoc = findErr(m, 2);
 			if (errLoc != -1) {
-				if (2 * errLoc / m != 0) A(m / 2);
+				if ((2 - errLoc - 1) / m != 0) A(m / 2);
 				m /= 2;
-				if (m == 0) break;
+				if (m == 0) {
+					B(); break;
+				}
 			}
 			else break;
-			B(n);
 		}
-
 		A(x / 2);
 		m = x / 2;
+		errLoc = findErr(m, 3);
 		while (1) {
-			errLoc = findErr(m, 3);
 			if (errLoc != -1) {
-				if (2 * errLoc / m != 0) A(m / 2);
+				if ((2 - errLoc - 1) / m != 0)A(m / 2);
 				m /= 2;
-				if (m == 0) break;
+				if (m == 0) {
+					B(); break;
+				}
 			}
 			else break;
-			B(n);
 		}
 		A(x / 2);
-		B(n);
+		B();
+		return;
 	}
-public:
-	void Gh(int x) {
+	void Gh(int x)
+	{
 		if (x == 1) return;
 		while (1) {
-			s[1];
-			int errLoc = findErr(x / 2, 1);
-			if (errLoc == -1) break;
+			if (findErr(x / 2, 1) == -1) break;
 			fnc(x);
 		}
 		Gh(x / 2);
 		A(x);
 		Gh(x / 2);
-		return;
 	}
 };
-
 int main()
 {
 	int n;
 	cin >> n;
+	G_n = n;
 	int i;
 
 	for (i = 1; i <= n; i++) {
