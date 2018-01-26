@@ -18,133 +18,105 @@ public:
 	void B() {
 		swap(s[1], s[G_n / 2 + 1]);
 	}
-	void g1(int n) {
-		int x = n / 4;
-		int alpha, beta;
-		while (1) {
-			for (int i = 1; i <= n / 2; i++) {
-				if (s[i] <= n / 2) {
-					alpha = i;
-					break;
-				}
-			}
-			if ((alpha - 1) / x != 0) A(x);
-			x /= 2;
-			if (x == 0) break;
+	void hunt(int a, int b) {
+		switch (b) {
+		case 1: {
+			return;
+			break;
 		}
-		A(n / 2);
-		x = n / 4;
-		while (1) {
-			for (int i = n / 2 + 1; i <= n; i++) {
-				if (s[i] > n / 2) {
-					beta = i;
-					break;
-				}
-			}
-			if ((beta - 1) / x != 0) A(x);
-			x /= 2;
-			if (x == 0) break;
+		case 2: {
+			if (a == 0 || a == 2) A(1);
+			return;
+			break;
 		}
-		B();
+		default: {
+		bIsntTwo:
+			if ((2 * a - 1) / b == 0) {
+				b /= 2;
+				a %= b;
+				if (b != 2) goto bIsntTwo;
+				else if (a == 0 || a == 2) A(1);
+				return;
+			}
+			else A(b / 2);
+			break;
+		}
+		}
 	}
+
 	void G(int n) {
-		int cnt = 0;
-		int i;
+		int c, i, x, y;
+	regroup:
+		c = 0;
 		for (i = 1; i <= n / 2; i++) {
-			if (s[i] <= n / 2) cnt++;
+			if (s[i] > n / 2) {
+				x = i;
+				c = 1;
+				break;
+			}
 		}
-
-		if (cnt == 0) {
-			A(n / 2);
+		if (!c) return;
+		for (i = n / 2 + 1; i <= n; i++) {
+			if (s[i] <= n / 2) {
+				y = i;
+				break;
+			}
 		}
-		else if (cnt == n / 2) {
-
-		}
-		else if (cnt == 1) {
-			g1(n);
-		}
-		else if (cnt >= 2 && cnt <= n / 4) {
-			g1(n);
-			G(n);
-		}
-		else if (cnt >= n / 4 && cnt <= n / 2) {
-			A(n / 2);
-			g1(n);
-			G(n);
-		}
+		hunt(x, n / 2);
+		A(n / 2);
+		y -= n / 2;
+		hunt(y, n / 2);
+		A(n / 2);
+		B();
+		goto regroup;
 	}
 };
 
 class Ghana : Grouping {
 public:
-	int findErr(int n, int mode)
-	{
-		switch (mode) {
-		case 1: {
-			for (int i = 1; i <= n; i++) if (s[i] > n) return i;
-			break;
-		}
-		case 2: {
-			for (int i = 1; i <= n; i++) if (s[i] % 2 * n  > n) return i;
-			break;
-		}
-		case 3: {
-			for (int i = 1; i <= n; i++) if (s[i] % 2 * n <= n) return i;
-			break;
-		}
-		}
+	int g(int a, int b) {
+		if (a % b == 0) return b;
+		else return a % b;
 	}
 	void fnc(int x)
 	{
-		int m = x / 2;
-		if (x == 2) {
-			m = 1;
-			int errLoc = findErr(m, 2);
-			if (errLoc != -1) A(1);
-			A(2);
-			errLoc = findErr(m, 2);
-			if (errLoc != -1) A(1);
-			A(2);
-			return;
-		}
-		int errLoc = findErr(m, 2);
-		while (1) {
-			if (errLoc != -1) {
-				if ((2 - errLoc - 1) / m != 0) A(m / 2);
-				m /= 2;
-				if (m == 0) {
-					B(); break;
-				}
+		int c, i, m, n;
+	refnc:
+		c = 0;
+		for (i = 1; i <= x / 2; i++) {
+			if (g(s[i], x) > x / 2) {
+				m = i;
+				c = 1;
+				break;
 			}
-			else break;
 		}
+		if (c == 0) return;
+		for (i = x / 2 + 1; i <= x; i++) {
+			if (g(s[i], x) <= x / 2) {
+				n = i;
+				break;
+			}
+		}
+		hunt(m, x / 2);
+		B();
 		A(x / 2);
-		m = x / 2;
-		errLoc = findErr(m, 3);
-		while (1) {
-			if (errLoc != -1) {
-				if ((2 - errLoc - 1) / m != 0)A(m / 2);
-				m /= 2;
-				if (m == 0) {
-					B(); break;
-				}
-			}
-			else break;
-		}
+		n -= x / 2;
+		hunt(n, x / 2);
+		B();
 		A(x / 2);
 		B();
+		goto refnc;
 		return;
 	}
 	void Gh(int x)
 	{
 		if (x == 1) return;
-		while (1) {
-			if (findErr(x / 2, 1) == -1) break;
-			fnc(x);
-		}
+		fnc(x);
 		Gh(x / 2);
-		A(x);
+		A(x / 2);
 		Gh(x / 2);
+		A(x / 2);
+		return;
 	}
 };
 int main()
@@ -169,7 +141,7 @@ int main()
 	Ghn.Gh(n / 2);
 	Grp.A(n / 2);
 	Ghn.Gh(n / 2);
-	if (s[1] != 1) Grp.A(n / 2);
+	Grp.A(n / 2);
 	for (i = 1; i <= n; i++) {
 		cout << s[i] << " ";
 	}
