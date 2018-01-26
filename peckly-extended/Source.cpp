@@ -9,23 +9,27 @@ int G_n;
 void randomize(int n);
 class Grouping {
 public:
-	void A(int x) {
+	void A(int x, int n) {
 		int i;
 		for (i = 1; i <= x; i++) {
 			swap(s[i], s[i + x]);
 		}
+		for (i = 1; i <= n; i++) cout << s[i] << " ";
+		cout << endl;
 	}
-	void B() {
+	void B(int n) {
 		swap(s[1], s[G_n / 2 + 1]);
+		for (int i = 1; i <= n; i++) cout << s[i] << " ";
+		cout << endl;
 	}
-	void hunt(int a, int b) {
+	void hunt(int a, int b, int n) {
 		switch (b) {
 		case 1: {
 			return;
 			break;
 		}
 		case 2: {
-			if (a == 0 || a == 2) A(1);
+			if (a == 0 || a == 2) A(1,n);
 			return;
 			break;
 		}
@@ -35,10 +39,10 @@ public:
 				b /= 2;
 				a %= b;
 				if (b != 2) goto bIsntTwo;
-				else if (a == 0 || a == 2) A(1);
+				else if (a == 0 || a == 2) A(1, n);
 				return;
 			}
-			else A(b / 2);
+			else A(b / 2, n);
 			break;
 		}
 		}
@@ -62,12 +66,12 @@ public:
 				break;
 			}
 		}
-		hunt(x, n / 2);
-		A(n / 2);
+		hunt(x, n / 2, n);
+		A(n / 2, n);
 		y -= n / 2;
-		hunt(y, n / 2);
-		A(n / 2);
-		B();
+		hunt(y, n / 2, n);
+		A(n / 2, n);
+		B(n);
 		goto regroup;
 	}
 };
@@ -97,25 +101,25 @@ public:
 				break;
 			}
 		}
-		hunt(m, x / 2);
-		B();
-		A(x / 2);
+		hunt(m, x / 2, n);
+		B(n);
+		A(x / 2, n);
 		n -= x / 2;
-		hunt(n, x / 2);
-		B();
-		A(x / 2);
-		B();
+		hunt(n, x / 2, n);
+		B(n);
+		A(x / 2, n);
+		B(n);
 		goto refnc;
 		return;
 	}
-	void Gh(int x)
+	void Gh(int x, int n)
 	{
 		if (x == 1) return;
 		fnc(x);
-		Gh(x / 2);
-		A(x / 2);
-		Gh(x / 2);
-		A(x / 2);
+		Gh(x / 2, n);
+		A(x / 2, n);
+		Gh(x / 2, n);
+		A(x / 2, n);
 		return;
 	}
 };
@@ -138,10 +142,10 @@ int main()
 	cout << Ghn.findErr(x, y);*/
 
 	Grp.G(n);
-	Ghn.Gh(n / 2);
-	Grp.A(n / 2);
-	Ghn.Gh(n / 2);
-	Grp.A(n / 2);
+	Ghn.Gh(n / 2, n);
+	Grp.A(n / 2, n);
+	Ghn.Gh(n / 2, n);
+	Grp.A(n / 2, n);
 	for (i = 1; i <= n; i++) {
 		cout << s[i] << " ";
 	}
