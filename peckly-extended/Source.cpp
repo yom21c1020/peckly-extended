@@ -1,200 +1,176 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
-#include <chrono>
+#include <ctime>
 using namespace std;
-//Start of Array = 1
-int s[100001];
-void randomize(int n);
-class Grouping {
-public:
-	void A(int x) {
-		int i;
-		for (i = 1; i <= x; i++) {
-			swap(s[i], s[i + x]);
-		}
-	}
-	void B(int n) {
-		swap(s[1], s[n / 2 + 1]);
-	}
-	void g1(int n) {
-		int x = n / 4;
-		int alpha, beta;
-		while (1) {
-			for (int i = 1; i <= n / 2; i++) {
-				if (s[i] <= n / 2) {
-					alpha = i;
-					break;
-				}
-			}
-			if ((alpha - 1) / x != 0) A(x);
-			x /= 2;
-			if (x == 0) break;
-		}
-		A(n / 2);
-		x = n / 4;
-		while (1) {
-			for (int i = n / 2 + 1; i <= n; i++) {
-				if (s[i] > n / 2) {
-					beta = i;
-					break;
-				}
-			}
-			if ((beta - 1) / x != 0) A(x);
-			x /= 2;
-			if (x == 0) break;
-		}
-		B(n);
-	}
-	void G(int n) {
-		int cnt = 0;
-		int i;
-		for (i = 1; i <= n / 2; i++) {
-			if (s[i] <= n / 2) cnt++;
-		}
-
-		if (cnt == 0) {
-			A(n / 2);
-		}
-		else if (cnt == n / 2) {
-
-		}
-		else if (cnt == 1) {
-			g1(n);
-		}
-		else if (cnt >= 2 && cnt <= n / 4) {
-			g1(n);
-			G(n);
-		}
-		else if (cnt >= n / 4 && cnt <= n / 2) {
-			A(n / 2);
-			g1(n);
-			G(n);
-		}
-	}
-};
-
-class Ghana : Grouping {
-public:
-	int findErr(int n, int type) { // x - 시작 위치, y - 끝 위치, albt - 알파/베타(False - 알파, True - 베타)
-		switch (type) {
-		case 1: {
-			for (int i = 1; i <= n; i++) if (s[i] > n) return i;
-			break;
-		}
-		case 2: {
-			for (int i = 1; i <= n; i++) if (s[i] % (2 * n) > n) return i;
-			break;
-		}
-		case 3: {
-			for (int i = 1; i <= n; i++)if (s[i] % (2 * n) <= n) return i;
-			break;
-		}
-		}
-		return -1;
-	}
-	void fnc(int n) {
-		int x = n;
-		int m = x / 2;
-		int errLoc;
-		if (x == 2) {
-			for (int i = 1; i <= 2; i++) {
-				int errLoc = findErr(m, 2);
-				if (errLoc == -1) A(2);
-				else A(1);
-			}
-			return;
-		}
-		while (1) {
-			errLoc = findErr(m, 2);
-			if (errLoc != -1) {
-				if (2 * errLoc / m != 0) A(m / 2);
-				m /= 2;
-				if (m == 0) break;
-			}
-			else break;
-			B(n);
-		}
-
-		A(x / 2);
-		m = x / 2;
-		while (1) {
-			errLoc = findErr(m, 3);
-			if (errLoc != -1) {
-				if (2 * errLoc / m != 0) A(m / 2);
-				m /= 2;
-				if (m == 0) break;
-			}
-			else break;
-			B(n);
-		}
-		A(x / 2);
-		B(n);
-	}
-public:
-	void Gh(int x) {
-		if (x == 1) return;
-		while (1) {
-			s[1];
-			int errLoc = findErr(x / 2, 1);
-			if (errLoc == -1) break;
-			fnc(x);
-		}
-		Gh(x / 2);
-		A(x);
-		Gh(x / 2);
-		return;
-	}
-};
-
-int main()
-{
-	int n;
-	cin >> n;
+int d[10001], c[10001], x[2][10001], f[10001];
+int k0, k1, n = 1, j, m;
+int test(int n);
+//////////////////////////////////////
+void A(int x) {
 	int i;
-
-	for (i = 1; i <= n; i++) {
-		cin >> s[i];
+	for (i = 1; i <= x; i++) {
+		swap(d[i], d[i + x]);
 	}
-
-	//randomize(n);
-	Grouping Grp;
-	Ghana Ghn;
-	/*int x, y;
-	cin >> x >> y;
-	cout << Ghn.findErr(x, y);*/
-
-	Grp.G(n);
-	Ghn.Gh(n / 2);
-	Grp.A(n / 2);
-	Ghn.Gh(n / 2);
-	if (s[1] != 1) Grp.A(n / 2);
+	//////////////////////////////////
+	cout << "A(" << x << ") : ";
 	for (i = 1; i <= n; i++) {
-		cout << s[i] << " ";
+		cout << d[i] << " ";
 	}
 	cout << endl;
+}
+void B() {
+	swap(d[1], d[n / 2 + 1]);
+	//////////////////////////////////
+	cout << "B() : ";
+	for (int i = 1; i <= n; i++) {
+		cout << d[i] << " ";
+	}
+	cout << endl;
+}
+//////////////////////////////////////
+void ex_hunt(int p)
+{
+	if (p == 0) j = k0;
+	else j = k1;
+	if (j == 0) return;
+	while (1) {
+		j--;
+		A(x[p][j]);
+		if (j <= 0) return;
+	}
+}
+//////////////////////////////////////
+void hunt(int alpha, int beta, int gamma) {
+	int k = 0;
+	if (beta == 1) goto hunt_end;
+	if (beta == 2) goto hunt_end2;
+hunt_restart:
+	if (((2 * alpha - 1) / beta) == 1) {
+		A(beta / 2);
+		x[gamma][k] = beta / 2;
+		k++;
+	}
+	beta /= 2;
+	//alpha % beta == 0 ? alpha = beta : alpha %= beta;
+	if (alpha % beta == 0) alpha = beta;
+	else alpha %= beta;
+	if (beta == 2) goto hunt_end2;
+	else goto hunt_restart;
 
+hunt_end2:
+	if (alpha != 1) {
+		A(1);
+		x[gamma][k] = 1;
+		k++;
+	}
+hunt_end:
+	if (gamma == 1)	k1 = k;
+	else k0 = k;
+}
+//////////////////////////////////////
+void xbox(int a, int b)
+{
+	if (a == b) return;
+	if (a > b) {
+		swap(a, b);
+	}
+	if (a == 1 && b == 2) {
+		A(1);
+		goto asdf;
+	}
+	if (a == 1 && b == (n / 2) + 1) {
+		B();
+		goto asdf;
+	}
+	if (a <= (n / 2) && b <= (n / 2)) {
+		hunt(a, n / 2, 0);
+		B();
+		ex_hunt(0);
+		hunt(b, n / 2, 1);
+		B();
+		ex_hunt(1);
+		hunt(a, n / 2, 0);
+		B();
+		ex_hunt(0);
+		goto asdf;
+	}
+	else if (a > (n / 2) && b > (n / 2)) {
+		A(n / 2);
+		hunt(a - (n / 2), n / 2, 0);
+		B();
+		ex_hunt(0);
+		hunt(b - (n / 2), n / 2, 1);
+		B();
+		ex_hunt(1);
+		hunt(a - (n / 2), n / 2, 0);
+		B();
+		ex_hunt(0);
+		A(n / 2);
+		goto asdf;
+	}
+	else {
+		hunt(a, n / 2, 0);
+		A(n / 2);
+		hunt(b - (n / 2), n / 2, 1);
+		B();
+		ex_hunt(1);
+		A(n / 2);
+		ex_hunt(0);
+		goto asdf;
+	}
+asdf:
+	swap(c[f[a]], c[f[b]]);
+	swap(f[a], f[b]);
+	cout << "//////////////////////////////////////" << endl;
+	return;
+}
+//////////////////////////////////////
+int main()
+{
+	int i;
+	cin >> m;
+	test(m);
+
+	while (m > n) n *= 2;
+	for (i = 1; i <= n; i++) f[i] = 1;
+	for (i = m + 1; i <= n; i++) d[i] = INT_MAX;
+
+	for (i = 1; i < n; i++) {
+		for (j = i + 1; j <= n; j++) {
+			if (d[i] > d[j]) f[i]++;
+			else f[j]++;
+		}
+	}
+
+	for (i = 1; i <= m; i++) c[f[i]] = i;
+
+	for (i = m; i >= 1; i--) xbox(c[i], i);
+
+	cout << endl;
+	for (i = 1; i <= m; i++) {
+		cout << d[i] << " ";
+	}
+	cout << endl;
+	system("pause");
 	return 0;
 }
-
-void randomize(int n)
+//////////////////////////////////////
+int test(int n)
 {
-	std::random_device rn;
-	std::mt19937 mtRand(time(NULL));
-	int i, a;
-	int d[100001];
-	for (i = 0; i <= 100000; i++) {
-		d[i] = 0;
-	}
-	for (i = 1; i <= n; i++) {
-	re:
-		a = mtRand() % n + 1;
-
-		if (d[a] != 1) {
-			d[a] = 1;
-			s[i] = a;
+	int is_test, i;
+	cin >> is_test;
+	if (!is_test) {
+		for (i = 1; i <= n; i++) {
+			cin >> d[i];
 		}
-		else goto re;
 	}
-	return;
+	else {
+		std::default_random_engine generator;
+		std::uniform_int_distribution<int> distribution(1, 10);
+		for (i = 1; i <= n; i++) {
+			d[i] = distribution(generator);
+		}
+	}
+	return 0;
 }
