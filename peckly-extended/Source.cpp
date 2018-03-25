@@ -1,32 +1,40 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
+#include <chrono>
 #include <ctime>
+#include <fstream>
 using namespace std;
 int d[10001], c[10001], x[2][10001], f[10001];
 int k0, k1, n = 1, j, m;
+int cnt = 0;
+ofstream out("result.txt");
+ofstream max_output("max.txt");
 int test(int n);
+int finderr(void);
 //////////////////////////////////////
 void A(int x) {
 	int i;
 	for (i = 1; i <= x; i++) {
 		swap(d[i], d[i + x]);
 	}
+	cnt++;
 	//////////////////////////////////
-	cout << "A(" << x << ") : ";
+	out << "A(" << x << ") : ";
 	for (i = 1; i <= n; i++) {
-		cout << d[i] << " ";
+		out << d[i] << " ";
 	}
-	cout << endl;
+	out << endl;
 }
 void B() {
 	swap(d[1], d[n / 2 + 1]);
+	cnt++;
 	//////////////////////////////////
-	cout << "B() : ";
+	out << "B() : ";
 	for (int i = 1; i <= n; i++) {
-		cout << d[i] << " ";
+		out << d[i] << " ";
 	}
-	cout << endl;
+	out << endl;
 }
 //////////////////////////////////////
 void ex_hunt(int p)
@@ -122,16 +130,12 @@ void xbox(int a, int b)
 asdf:
 	swap(c[f[a]], c[f[b]]);
 	swap(f[a], f[b]);
-	cout << "//////////////////////////////////////" << endl;
+	//cout << "//////////////////////////////////////" << endl;
 	return;
 }
 //////////////////////////////////////
-int main()
-{
+int proc() {
 	int i;
-	cin >> m;
-	test(m);
-
 	while (m > n) n *= 2;
 	for (i = 1; i <= n; i++) f[i] = 1;
 	for (i = m + 1; i <= n; i++) d[i] = INT_MAX;
@@ -146,16 +150,58 @@ int main()
 	for (i = 1; i <= m; i++) c[f[i]] = i;
 
 	for (i = m; i >= 1; i--) xbox(c[i], i);
+	return 0;
+}
+//////////////////////////////////////
+int main()
+{
+	cin >> m;
+	//test(m);
+	finderr();
+	proc();
 
-	cout << endl;
-	for (i = 1; i <= m; i++) {
-		cout << d[i] << " ";
-	}
-	cout << endl;
+	//cout << endl;
+	//for (int i = 1; i <= m; i++) {
+	//	cout << d[i] << " ";
+	//}
+	//cout << endl;
+
 	system("pause");
 	return 0;
 }
 //////////////////////////////////////
+int test_inf(int n)
+{
+	int i;
+	std::default_random_engine generator;
+	std::uniform_int_distribution<int> distribution(1, 10);
+	for (i = 1; i <= n; i++) {
+		d[i] = distribution(generator);
+	}
+
+	return 0;
+}
+
+int finderr() {
+	int inputData[10001], m_cnt = 0, m_inputData[10001];
+	while (1) {
+		test_inf(m);
+		for (int i = 1; i <= n; i++)
+			inputData[i] = d[i];
+		proc();
+		if (cnt > m_cnt) {
+			m_cnt = cnt;		
+			for (int i = 1; i <= n; i++) m_inputData[i] = inputData[i];
+			max_output << m_cnt << endl;
+			for (int i = 1; i <= n; i++) max_output << m_inputData[i] << " ";
+			max_output << endl;
+		}
+		cnt = 0;
+
+
+		return 0;
+	}
+}
 int test(int n)
 {
 	int is_test, i;
