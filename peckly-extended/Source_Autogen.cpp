@@ -14,19 +14,19 @@ void A(int x) {
 	}
 	//////////////////////////////////
 	cout << "    A(" << x << ") : ";
-	for (i = 1; i <= n; i++) {
-		cout << d[i] << " ";
-	}
-	cout << endl;
+//	for (i = 1; i <= n; i++) {
+//		cout << d[i] << " ";
+//	}
+//	cout << endl;
 }
 void B(int x) {
 	swap(d[1], d[x / 2 + 1]);
 	//////////////////////////////////
 	cout << "    B(" << x << ") : ";
-	for (int i = 1; i <= n; i++) {
-		cout << d[i] << " ";
-	}
-	cout << endl;
+//	for (int i = 1; i <= n; i++) {
+//		cout << d[i] << " ";
+//	}
+//	cout << endl;
 }
 ////////////////////////////////////////
 int chkSrt(int n)
@@ -148,10 +148,10 @@ int proc(int n)
 	auto chk = [n](int chkStat) {
 		if (chkStat == 2) A(n / 2);
 		proc(n / 2);
-		cout << "End of proc(" << n / 2 << ")" << endl;
+		//cout << "End of proc(" << n / 2 << ")" << endl;
 		if (n != 2) A(n / 2);
 		proc(n / 2);
-		cout << "End of proc(" << n / 2 << ")" << endl;
+		//cout << "End of proc(" << n / 2 << ")" << endl;
 		return 0;
 	};
 	while (1) {
@@ -220,8 +220,8 @@ int main()
 	//srand((unsigned)time(NULL));
 	int i;
 	cin >> n;
-	for (i = 1; i <= n; i++) cin >> d[i];
-	//testRandom(n);
+	//for (i = 1; i <= n; i++) cin >> d[i];
+	testRandom(n);
 	proc(n);
 	return 0;
 }
