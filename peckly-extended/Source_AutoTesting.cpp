@@ -13,20 +13,20 @@ void A(int x) {
 		swap(d[i], d[i + x]);
 	}
 	//////////////////////////////////
-	cout << "    A(" << x << ") : ";
-	for (i = 1; i <= n; i++) {
-		cout << d[i] << " ";
-	}
-	cout << endl;
+	//cout << "    A(" << x << ") : ";
+	//for (i = 1; i <= n; i++) {
+	//	cout << d[i] << " ";
+	//}
+	//cout << endl;
 }
 void B(int x) {
 	swap(d[1], d[x / 2 + 1]);
 	//////////////////////////////////
-	cout << "    B(" << x << ") : ";
-	for (int i = 1; i <= n; i++) {
-		cout << d[i] << " ";
-	}
-	cout << endl;
+	//cout << "    B(" << x << ") : ";
+	//for (int i = 1; i <= n; i++) {
+	//	cout << d[i] << " ";
+	//}
+	//cout << endl;
 }
 ////////////////////////////////////////
 int chkSrt(int n)
@@ -71,7 +71,7 @@ int chkSrt(int n)
 //Subroutine
 void s1(int n)
 {
-	cout << "St.1" << endl;
+	//cout << "St.1" << endl;
 	int i, max, maxidx;
 	max = d[1];
 	maxidx = 1;
@@ -89,34 +89,34 @@ void s1(int n)
 		}
 		curN /= 2;
 	}
-	cout << endl;
+	//cout << endl;
 	return;
 }
 void s2(int n)
 {
-	cout << "St.2" << endl;
+	//cout << "St.2" << endl;
 	int i, cnt1, cnt2;
 	cnt1 = cnt2 = 0;
 	for (i = 1; i <= n / 2; i++) cnt1 += d[i];
 	for (i = n / 2 + 1; i <= n; i++) cnt2 += d[i];
 	if (cnt1 < cnt2) A(n / 2);
-	cout << endl;
+	//cout << endl;
 	return;
 }
 void s2_R(int n)
 {
-	cout << "St.2_r" << endl;
+	//cout << "St.2_r" << endl;
 	int i, cnt1, cnt2;
 	cnt1 = cnt2 = 0;
 	for (i = 1; i <= n / 2; i++) cnt1 += d[i];
 	for (i = n / 2 + 1; i <= n; i++) cnt2 += d[i];
 	if (cnt1 > cnt2) A(n / 2);
-	cout << endl;
+	//cout << endl;
 	return;
 }
 void s3(int n)
 {
-	cout << "St.3" << endl;
+	//cout << "St.3" << endl;
 	int i, min, minidx;
 	min = d[1];
 	minidx = 1;
@@ -135,23 +135,23 @@ void s3(int n)
 		}
 		curN /= 2;
 	}
-	cout << endl;
+	//cout << endl;
 	return;
 }
 ////////////////////////////////////////
 //Recursive Processing
 int proc(int n)
 {
-	cout << "proc(" << n << ")" << endl;
+	//cout << "proc(" << n << ")" << endl;
 	if (n == 1) return 0;
 	int chkStat;
 	auto chk = [n](int chkStat) {
 		if (chkStat == 2) A(n / 2);
 		proc(n / 2);
-		cout << "End of proc(" << n / 2 << ")" << endl;
+		//cout << "End of proc(" << n / 2 << ")" << endl;
 		if (n != 2) A(n / 2);
 		proc(n / 2);
-		cout << "End of proc(" << n / 2 << ")" << endl;
+		//cout << "End of proc(" << n / 2 << ")" << endl;
 		return 0;
 	};
 	while (1) {
@@ -178,7 +178,7 @@ int proc(int n)
 			chk(chkStat);
 			return 0;
 		}
-		cout << "St.4" << endl;
+		//cout << "St.4" << endl;
 		B(n);
 		chkStat = chkSrt(n);
 		if (chkStat) {
@@ -203,7 +203,7 @@ int proc(int n)
 			chk(chkStat);
 			return 0;
 		}
-		cout << "St.4_R" << endl;
+		//cout << "St.4" << endl;
 		B(n);
 		chkStat = chkSrt(n);
 		if (chkStat) {
@@ -217,15 +217,14 @@ bool chkSrt_(int n);
 int testRandom(int n);
 int main()
 {
-	//srand((unsigned)time(NULL));
+	srand((unsigned)time(NULL));
 	int i;
 	cin >> n;
-	for (i = 1; i <= n; i++) cin >> d[i];
-	//testRandom(n);
-	proc(n);
+	//for (i = 1; i <= n; i++) cin >> d[i];
+	testRandom(n);
+	//proc(n);
 	return 0;
 }
-
 bool chkSrt_(int n)
 {
 	int i, prev = d[1];
