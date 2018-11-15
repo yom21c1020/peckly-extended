@@ -4,7 +4,7 @@
 #include <ctime>
 using namespace std;
 int d[100001];
-int k0, k1, n, j, m, cnt_opr;
+int k0, k1, n, j, m, cnt_opr, cnt_a, cnt_b;
 ////////////////////////////////////////
 //Operator
 void A(int x) {
@@ -13,6 +13,7 @@ void A(int x) {
 		swap(d[i], d[i + x]);
 	}
 	cnt_opr++;
+	cnt_a++;
 	//////////////////////////////////
 	//cout << "    A(" << x << ") : ";
 	//for (i = 1; i <= n; i++) {
@@ -23,6 +24,7 @@ void A(int x) {
 void B(int x) {
 	swap(d[1], d[x / 2 + 1]);
 	cnt_opr++;
+	cnt_b++;
 	//////////////////////////////////
 	//cout << "    B(" << x << ") : ";
 	//for (int i = 1; i <= n; i++) {
@@ -219,7 +221,7 @@ bool chkSrt_(int n);
 int testRandom(int n);
 void permutation(int n, int r, int depth);
 void setarr(int n);
-int max_arr[100001], max_opr;
+int max_arr[100001], max_opr, max_a, max_b;
 int main()
 {
 	srand((unsigned)time(NULL));
@@ -228,9 +230,9 @@ int main()
 	//for (i = 1; i <= n; i++) cin >> d[i];
 	//testRandom(n);
 	setarr(n);
-	permutation(8, 8, 1);
+	permutation(n, n, 1);
 	for (i = 1; i <= n; i++) cout << max_arr[i] << " ";
-	cout << endl << max_opr;
+	cout << endl << max_opr << endl << max_a << " " << max_b;
 	//proc(n);
 	return 0;
 }
@@ -248,22 +250,34 @@ int isUsed[100001];
 int cnt;
 int arr[100001];
 void setarr(int n) { for (int i = 1; i <= n; i++) arr[i] = i; }
-void permutation(int n, int r, int depth) 
+void permutation(int n, int r, int depth)
 {
 	if (r == depth) {
 		for (int i = 1; i <= n; i++) d[i] = arr[i];
 		//cout << endl;
-		
 		proc(n);
 		if (cnt_opr > max_opr) {
 			for (int i = 1; i <= n; i++) max_arr[i] = arr[i];
+			cout << endl << max_opr;
+			for (i = 1; i <= n; i++) {
+				cout << arr[i] << " ";
+			}
+			cout << endl;
 			max_opr = cnt_opr;
+			max_a = cnt_a;
+			max_b = cnt_b;
 		}
-		cnt_opr = 0;
+		else if (cnt_opr == max_opr) {
+			for (i = 1; i <= n; i++) {
+				cout << arr[i] << " ";
+			}
+			cout << endl;
+		}
+		cnt_opr = cnt_a = cnt_b = 0;
 		return;
 	}
 
-	for (int i = depth; i<=n; i++) {
+	for (int i = depth; i <= n; i++) {
 		swap(arr[i], arr[depth]);
 		permutation(n, r, depth + 1);
 		swap(arr[i], arr[depth]);
