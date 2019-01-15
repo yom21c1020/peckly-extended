@@ -225,6 +225,7 @@ void findpow(int inputn)
 	for (int i = n - inputn + 1; i <= n; i++) d[i] = input[temp++];
 	::n = n;
 	proc(n);
+	cout << "\n\nResult: ";
 	for (int i = n - inputn + 1; i <= n; i++) cout << d[i] << " ";
 	cout << endl;
 }
