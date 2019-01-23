@@ -99,7 +99,7 @@ void s2(int n)
 	cnt1 = cnt2 = 0;
 	for (i = 1; i <= n / 2; i++) cnt1 += d[i];
 	for (i = n / 2 + 1; i <= n; i++) cnt2 += d[i];
-	if (cnt1 < cnt2) A(n / 2);
+	if (cnt1 <= cnt2) A(n / 2);
 	cout << endl;
 	return;
 }
@@ -110,7 +110,7 @@ void s2_R(int n)
 	cnt1 = cnt2 = 0;
 	for (i = 1; i <= n / 2; i++) cnt1 += d[i];
 	for (i = n / 2 + 1; i <= n; i++) cnt2 += d[i];
-	if (cnt1 > cnt2) A(n / 2);
+	if (cnt1 >= cnt2) A(n / 2);
 	cout << endl;
 	return;
 }
@@ -155,29 +155,29 @@ int proc(int n)
 		return 0;
 	};
 	while (1) {
-		chkStat = chkSrt(n);
-		if (chkStat) {
-			chk(chkStat);
-			return 0;
-		}
+		//chkStat = chkSrt(n);
+		//if (chkStat) {
+		//	chk(chkStat);
+		//	return 0;
+		//}
 		s1(n);
-		chkStat = chkSrt(n);
-		if (chkStat) {
-			chk(chkStat);
-			return 0;
-		}
+		//chkStat = chkSrt(n);
+		//if (chkStat) {
+		//	chk(chkStat);
+		//	return 0;
+		//}
 		s2(n);
-		chkStat = chkSrt(n);
-		if (chkStat) {
-			chk(chkStat);
-			return 0;
-		}
+		//chkStat = chkSrt(n);
+		//if (chkStat) {
+		//	chk(chkStat);
+		//	return 0;
+		//}
 		s3(n);
-		chkStat = chkSrt(n);
-		if (chkStat) {
-			chk(chkStat);
-			return 0;
-		}
+		//chkStat = chkSrt(n);
+		//if (chkStat) {
+		//	chk(chkStat);
+		//	return 0;
+		//}
 		cout << "St.4" << endl;
 		B(n);
 		chkStat = chkSrt(n);
@@ -186,23 +186,23 @@ int proc(int n)
 			return 0;
 		}
 		s3(n);
-		chkStat = chkSrt(n);
-		if (chkStat) {
-			chk(chkStat);
-			return 0;
-		}
+		//chkStat = chkSrt(n);
+		//if (chkStat) {
+		//	chk(chkStat);
+		//	return 0;
+		//}
 		s2_R(n);
-		chkStat = chkSrt(n);
-		if (chkStat) {
-			chk(chkStat);
-			return 0;
-		}
+		//chkStat = chkSrt(n);
+		//if (chkStat) {
+		//	chk(chkStat);
+		//	return 0;
+		//}
 		s1(n);
-		chkStat = chkSrt(n);
-		if (chkStat) {
-			chk(chkStat);
-			return 0;
-		}
+		//chkStat = chkSrt(n);
+		//if (chkStat) {
+		//	chk(chkStat);
+		//	return 0;
+		//}
 		cout << "St.4_R" << endl;
 		B(n);
 		chkStat = chkSrt(n);
@@ -225,6 +225,7 @@ void findpow(int inputn)
 	for (int i = n - inputn + 1; i <= n; i++) d[i] = input[temp++];
 	::n = n;
 	proc(n);
+	cout << endl << "Result: ";
 	for (int i = n - inputn + 1; i <= n; i++) cout << d[i] << " ";
 	cout << endl;
 }
